@@ -1,0 +1,51 @@
+N/A
+N/ASujal Thomas Tatipelli
+San Jose, California sujalt1811@gmail.com (669)234-6586 linkedin.com/in/sujal-thomas-tatipelli-b72120161 sujalthomas.com
+EXPERIENCE
+Back-End Developer Intern
+• Engineered a comprehensive data pipeline, leveraging ETL methodologies utilizing Python & SQL to ingest data from diverse sources into a 
+centralized data warehouse, enhancing data accessibility & integrity. 
+• Devised & documented a robust data model for the data warehouse, optimizing decision-making processes and establishing a data 
+dictionary to streamline data management & governance. 
+• Innovated and deployed a data visualization dashboard leveraging Power BI & Redash, enabling stakeholders to interpret complex data 
+effortlessly and make informed decisions.
+PROJECTS
+Full-Stack Developer
+Enterprise Softwares @ SJSU•September 2022 - December 2022
+• Transformed a Node.js app into a Spring MVC-based cashier's app with administrative login capability for Starbucks employees & in-store 
+order processing functionality. 
+• Executed a scalable cloud deployment on Google Cloud Platform (GCP) with an external load balancer set up as an ingress for cashier's app. 
+• Incorporated MySQL DB & RabbitMQ as required cloud databases to support complex data transactions. 
+• Developed the Starbucks API for mobile app & storefront deployment, integrated with Kong API Gateway & secured with API Key 
+Authentication. 
+• Managed entire project cycle, from requirement analysis & application design to deployment and performance testing, ensuring high-
+quality code and documentation shared on GitHub. 
+• Maintained a comprehensive project journal detailing weekly progress, challenges faced, and solutions implemented.
+Back-End Developer
+Database Management @ SJSU•September 2021 - May 2022
+• Orchestrated a team of four in construction of a price comparison website, transforming a Figma prototype into a functional webpage, 
+utilizing Node.js and React Native. The development process did not involve pre-existing APIs, and database was built organically from 
+ground up. 
+• Employed the BeautifulSoup4 Python library to scrape over 50,000 records from 20 different retailer websites, capturing current inventory 
+of sneakers and their latest prices. The gathered data was parsed, cleaned up, and stored to create a comprehensive database. Selenium was 
+used for AI test automation across various user scenarios. 
+• Developed a custom RESTful API and integrated it with the IFTTT service, enabling website's features to be accessed by popular IoT home 
+automation devices like Google Home and Alexa.
+Back-End Developer
+Object Oriented Design @ SJSU•August 2021 - December 2021
+• Led a team of five to design and create an interactive activity tracker application. Delegated responsibilities, designed the UI interface using 
+Flutter. 
+• Integrated: firebase authentication API, firebase database, profile management and leaderboard functionality, and web-store deployment.
+EDUCATION
+Bachelor of Engineering, Software Engineering
+Minor in Mathematics•San Jose State University•San Jose, CA•2022•Electives: Machine Learning & BigData / Intro to Cyber 
+Security / Mathematical Modelling / Autonomous Robotics
+INVOLVEMENT
+Tech Lead
+San Jose State University•Google Student Developer Club•September 2020 - December 2021
+• Organized and hosted monthly workshops on googles' products such as Flutter, Kotlin, Google Cloud Platform, etc.  
+• Created custom flyers to post and promote on club-specific social media.  
+• Built an audience of over 200 members with 12% month-on-month growth, inspiring an 80% student participant retention rate.
+SKILLS
+Java, Python, Javascript, HTML, CSS SQL, Matlab, R, React, Flutter, Flask, Django, Docker, Kubernetes, 
+Google Cloud Platform, Amazon Web Services, Shell/Bash, Figma, Git, Tableau, PowerBI, Redash, Jira, Spring boot JavaPikky Fremont, CA , May 2022 - September 2022
