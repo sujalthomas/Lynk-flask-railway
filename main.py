@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail as FlaskMail
-from flask_security_too import Security
+from flask_security import Security
 from flask_session import Session
 from flask_bcrypt import Bcrypt
 import os
