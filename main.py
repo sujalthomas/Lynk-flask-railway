@@ -15,7 +15,7 @@ import logging
 from flask_limiter.util import get_remote_address
 import openai
 from datetime import datetime, timedelta
-from flask_security import (
+from flask_security_too import (
     Security,
     SQLAlchemyUserDatastore,
     UserMixin,
@@ -26,7 +26,7 @@ from flask_security import (
 from werkzeug.security import generate_password_hash as encrypt_password
 from wtforms import StringField
 from wtforms.validators import DataRequired
-from flask_security.forms import RegisterForm
+from flask_security_too.forms import RegisterForm
 from flask_mail import Message
 
 
