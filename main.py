@@ -160,7 +160,7 @@ roles_users = db.Table(
 class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
-    password_hash = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     is_active = db.Column(db.Boolean, default=False)
     roles = db.relationship("Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic"))
