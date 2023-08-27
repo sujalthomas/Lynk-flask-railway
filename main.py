@@ -58,7 +58,7 @@ DB_NAME = os.getenv("DB_NAME")
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+] = f"postgresql://postgres:69qK1AyQZVbWpUxpZ1EZ@containers-us-west-105.railway.app:5544/railway"
 
 
 # Database configuration
