@@ -19,7 +19,12 @@ import openai
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash as encrypt_password
 from flask_mail import Message
-from flask_security_too import RoleMixin, UserMixin, SQLAlchemyUserDatastore, RegisterForm
+from flask_login import UserMixin, RoleMixin, SQLAlchemyUserDatastore
+from flask_login import LoginManager
+from http import HTTPStatus
+import re
+
+
 
 
 
@@ -99,6 +104,8 @@ with app.app_context():
 # MODELS ###############
 # Define models #######
 
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 # Current folder path
@@ -138,7 +145,7 @@ class UsageStatistic(db.Model):
     user = db.relationship("User", backref="usage_statistics")
 
 # Define roles
-class Role(db.Model, RoleMixin):
+class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
@@ -150,7 +157,7 @@ roles_users = db.Table(
     db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
 )
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
     password = db.Column(db.String(255), nullable=False)
@@ -168,7 +175,6 @@ class User(db.Model, UserMixin):
     is_active = db.Column(db.Boolean, default=False)
     verification_code = db.Column(db.String(6))
     verification_code_expiration = db.Column(db.DateTime)
-
 
 #proceeding to remove db stuff and establish flask security
 
@@ -224,15 +230,23 @@ def index():
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
-    email = request.form.get("email")
-    password = request.form.get("password")
-    name = request.form.get("name")
+    email = data.get("email")
+    password = data.get("password")
+    name = data.get("name")
+
+    # Check if email, password, or name is not provided
+    if not email or not password or not name:
+        return jsonify(success=False, message="Email, password, and name are required"), HTTPStatus.BAD_REQUEST
+
+    # Check if email is valid
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return jsonify(success=False, message="Invalid email"), HTTPStatus.BAD_REQUEST
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     user = User.query.filter_by(email=email).first()
     if user:
-        return jsonify(success=False, message="User already exists"), 400
+        return jsonify(success=False, message="User already exists"), HTTPStatus.BAD_REQUEST
 
     user_role = Role.query.filter_by(name="user").first()
     if not user_role:
@@ -258,9 +272,10 @@ def register():
         mail.send(msg)
     except Exception as e:
         logging.error(f"Error sending email to {email}: {str(e)}")
-        return jsonify(success=False, message="Error sending email."), 500
+        return jsonify(success=False, message="Error sending email."), HTTPStatus.INTERNAL_SERVER_ERROR
 
-    return jsonify(success=True, message="Verification code has been sent to your email."), 200
+    return jsonify(success=True, message="Verification code has been sent to your email."), HTTPStatus.OK
+
 
 @app.route("/verify", methods=["POST"])
 def verify():
@@ -268,38 +283,32 @@ def verify():
     email = data.get("email")
     code = data.get("code")
 
+    # Check if email or code is not provided
+    if not email or not code:
+        return jsonify(success=False, message="Email and code are required"), HTTPStatus.BAD_REQUEST
+
     user = User.query.filter_by(email=email).first()
     if not user:
-        return jsonify(success=False, message="User not found"), 404
+        return jsonify(success=False, message="User not found"), HTTPStatus.NOT_FOUND
 
     if user.verification_code != code or datetime.utcnow() > user.verification_code_expiration:
-        return jsonify(success=False, message="Invalid or expired code"), 401
+        return jsonify(success=False, message="Invalid or expired code"), HTTPStatus.UNAUTHORIZED
 
     user.is_active = True
     user.verification_code = None
     user.verification_code_expiration = None
     db.session.commit()
 
-    return jsonify(success=True, message="Registration successful"), 200
-
-@app.route("/login", methods=["POST"])
-def login():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
-
-    user = User.query.filter_by(email=email).first()
-    if not user or not bcrypt.check_password_hash(user.password, password) or not user.is_active:
-        return jsonify(success=False, message="Invalid email or password"), 401
-
-    token = serializer.dumps({"user": user.user_id}, salt="password-reset")
-    return jsonify(success=True, token=token), 200
-
+    return jsonify(success=True, message="Registration successful"), HTTPStatus.OK
 
 @app.route("/apiverify", methods=["POST"])
 def apiverify():
     data = request.get_json()
     api_key = data.get("apiKey")
+
+    # Check if apiKey is not provided
+    if not api_key:
+        return jsonify(success=False, message="API key is required"), HTTPStatus.BAD_REQUEST
 
     try:
         if is_api_key_valid(api_key):
@@ -309,7 +318,27 @@ def apiverify():
             raise Exception("Invalid API key")
     except Exception as e:
         logging.error(str(e))
-        return jsonify(success=False, message="Invalid API key"), 401
+        return jsonify(success=False, message="Invalid API key"), HTTPStatus.UNAUTHORIZED
+
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    # Check if email or password is not provided
+    if not email or not password:
+        return jsonify(success=False, message="Email and password are required"), HTTPStatus.BAD_REQUEST
+
+    user = User.query.filter_by(email=email).first()
+    if not user or not bcrypt.check_password_hash(user.password, password) or not user.is_active:
+        return jsonify(success=False, message="Invalid email or password"), HTTPStatus.UNAUTHORIZED
+
+    token = serializer.dumps({"user": user.user_id}, salt="password-reset")
+    return jsonify(success=True, token=token), HTTPStatus.OK
+
 
 # cover letter generation
 @app.route("/cover-letter", methods=["POST", "GET", "PUT", "DELETE"])
