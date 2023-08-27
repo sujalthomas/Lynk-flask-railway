@@ -18,8 +18,6 @@ from flask_limiter.util import get_remote_address
 import openai
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash as encrypt_password
-from wtforms import StringField
-from wtforms.validators import DataRequired
 from flask_mail import Message
 from flask_security import RoleMixin, UserMixin, SQLAlchemyUserDatastore, RegisterForm
 
@@ -184,12 +182,6 @@ hashed_password = encrypt_password(password)
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 
-# Custom registration form
-class ExtendedRegisterForm(RegisterForm):
-    username = StringField("Username", [DataRequired()])
-
-
-
 
 # Utils
 # Define utils
@@ -232,9 +224,9 @@ def index():
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
-    name = data.get("name")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    name = request.form.get("name")
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
