@@ -55,9 +55,11 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
 
+
 app.config[
     "SQLALCHEMY_DATABASE_URI"
 ] = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
 
 # Database configuration
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -88,14 +90,7 @@ mail = FlaskMail(app)
 
 
 # Session configurations 
-app.config["SESSION_TYPE"] = "redis"
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_USE_SIGNER"] = True
-app.config["SESSION_KEY_PREFIX"] = "your_app:"
-app.config["SESSION_REDIS"] = redis.StrictRedis(
-    host=os.getenv("REDIS_HOST", "localhost"), port=os.getenv("REDIS_PORT", 6379), db=0
-)
-
+app.config["REDIS_URL"] = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
 
 # Generate DB tables
 with app.app_context():
