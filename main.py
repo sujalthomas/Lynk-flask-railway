@@ -144,18 +144,20 @@ class UsageStatistic(db.Model):
     date = db.Column(db.DateTime, default=db.func.CURRENT_TIMESTAMP)
     user = db.relationship("User", backref="usage_statistics")
 
+
+# user roles
+roles_users = db.Table('roles_users',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id'), primary_key=True)
+)
+
 # Define roles
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
+    users = db.relationship('User', secondary=roles_users, back_populates='roles')
 
-# user roles
-roles_users = db.Table(
-    "roles_users",
-    db.Column("user_id", db.Integer(), db.ForeignKey("user.user_id")),
-    db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
-)
 
 class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
@@ -163,7 +165,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     is_active = db.Column(db.Boolean, default=False)
-    roles = db.relationship("Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic"))
+    roles = db.relationship('Role', secondary=roles_users, back_populates='users')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
