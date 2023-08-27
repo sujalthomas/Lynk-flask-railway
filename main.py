@@ -41,6 +41,21 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
+import subprocess
+
+def install_package(package_name):
+    try:
+        subprocess.check_call(["pip", "install", package_name])
+        print(f"Successfully installed {package_name}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing {package_name}: {e}")
+
+# Example usage:
+install_package("Flask-Security-Too")
+
+
+
+
 # Secuirty configurations
 SECRET_KEY = os.getenv("SECRET_KEY", default=secrets.token_urlsafe(16))
 app.config["SECRET_KEY"] = SECRET_KEY
