@@ -21,6 +21,8 @@ from werkzeug.security import generate_password_hash as encrypt_password
 from wtforms import StringField
 from wtforms.validators import DataRequired
 from flask_mail import Message
+from flask_security import RoleMixin, UserMixin, SQLAlchemyUserDatastore, RegisterForm
+
 
 
 
@@ -107,64 +109,90 @@ UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
 # Configuration options
 logging.basicConfig(level=logging.INFO)
 
-# MODELS
-# Define models
+# MODELS ###############
+# Define models #######
 
 #cvs generated
 class CoverLetter(db.Model):
     cover_letter_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
     company_name = db.Column(db.String(100))
     job_listing = db.Column(db.Text)
     recruiter = db.Column(db.String(100))
-    date = db.Column(db.DateTime, default=db.func.current())
+    date = db.Column(db.DateTime, default=db.func.CURRENT_TIMESTAMP)
     file_path = db.Column(db.String(255))
+    user = db.relationship("User", backref="cover_letters")
 
 # resumes uploaded
 class Resume(db.Model):
     resume_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
     content = db.Column(db.Text)
-    upload_date = db.Column(db.DateTime, default=db.func.current())
+    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship("User", backref="resumes")
 
 # usage statistics
 class UsageStatistic(db.Model):
     stat_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
     action = db.Column(db.String(50))
-    date = db.Column(db.DateTime, default=db.func.current())
+    date = db.Column(db.DateTime, default=db.func.CURRENT_TIMESTAMP)
+    user = db.relationship("User", backref="usage_statistics")
 
-class User(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
-    is_active = db.Column(db.Boolean, default=False)
-    verification_code = db.Column(db.String(6))
-    verification_code_expiration = db.Column(db.DateTime)
-    # add any other fields you need
-
-class Role(db.Model):
+# Define roles
+class Role(db.Model, RoleMixin):
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
-    # add any other fields you need
 
-
-
+# user roles
 roles_users = db.Table(
     "roles_users",
     db.Column("user_id", db.Integer(), db.ForeignKey("user.user_id")),
     db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
 )
 
+class User(db.Model, UserMixin):
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255))
+    password = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    fs_uniquifier = db.Column(db.String(255), unique=True)
+    roles = db.relationship(
+        "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
+    )
+    
+    # New columns for reset code and its expiration
+    password_reset_code = db.Column(db.String(6))
+    password_reset_code_expiration = db.Column(db.DateTime)
+    
+    # New columns for email verification
+    is_active = db.Column(db.Boolean, default=False)
+    verification_code = db.Column(db.String(6))
+    verification_code_expiration = db.Column(db.DateTime)
 
-# Generate DB tables
-with app.app_context():
-    db.create_all()
+
+#proceeding to remove db stuff and establish flask security
+
+
+
+# Define hashed_password
+password = "supersecretpassword"
+hashed_password = encrypt_password(password)
+
+# Setup Flask-Security
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+
+
+# Custom registration form
+class ExtendedRegisterForm(RegisterForm):
+    username = StringField("Username", [DataRequired()])
+
+
+
 
 # Utils
 # Define utils
-
 def is_api_key_valid(api_key):
     openai.api_key = api_key
     try:
@@ -187,7 +215,6 @@ def convert_to_txt(file, file_type):
         )
     else:
         raise ValueError("Unsupported file type")
-
 
 
 
