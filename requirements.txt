@@ -10,7 +10,7 @@ Flask_Limiter==3.4.0
 Flask_Mail==0.9.1
 flask_session==0.5.0
 flask_sqlalchemy==3.0.5
-flask_security_too
+flask_security_too=4.0.0
 openai==0.27.8
 PyPDF2==3.0.1
 python_docx==0.8.11
