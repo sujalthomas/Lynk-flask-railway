@@ -189,6 +189,9 @@ password = "supersecretpassword"
 hashed_password = encrypt_password(password)
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 # Utils
 # Define utils
