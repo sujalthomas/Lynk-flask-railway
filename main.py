@@ -19,7 +19,7 @@ import openai
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash as encrypt_password
 from flask_mail import Message
-from flask_security import RoleMixin, UserMixin, SQLAlchemyUserDatastore, RegisterForm
+from flask_security_too import RoleMixin, UserMixin, SQLAlchemyUserDatastore, RegisterForm
 
 
 
