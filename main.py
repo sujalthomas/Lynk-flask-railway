@@ -19,11 +19,11 @@ import openai
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash as encrypt_password
 from flask_mail import Message
-from flask_login import UserMixin, RoleMixin, SQLAlchemyUserDatastore
+from flask_login import UserMixin, login_user, logout_user, login_required, current_user
 from flask_login import LoginManager
 from http import HTTPStatus
 import re
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -157,16 +157,20 @@ roles_users = db.Table(
     db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
 )
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
-    password = db.Column(db.String(255), nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    fs_uniquifier = db.Column(db.String(255), unique=True)
-    roles = db.relationship(
-        "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
-    )
+    is_active = db.Column(db.Boolean, default=False)
+    roles = db.relationship("Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic"))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
     
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
     # New columns for reset code and its expiration
     password_reset_code = db.Column(db.String(6))
     password_reset_code_expiration = db.Column(db.DateTime)
@@ -183,9 +187,6 @@ class User(db.Model):
 # Define hashed_password
 password = "supersecretpassword"
 hashed_password = encrypt_password(password)
-
-# Setup Flask-Security
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 
 
