@@ -19,15 +19,10 @@ import openai
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash as encrypt_password
 from flask_mail import Message
-from flask_login import UserMixin, login_user, logout_user, login_required, current_user
-from flask_login import LoginManager
 from http import HTTPStatus
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
-
-
+from wtforms import Form, StringField, PasswordField, validators
 
 
 # Load environment variables
@@ -101,11 +96,7 @@ app.config["REDIS_URL"] = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-we
 with app.app_context():
     db.create_all()
 
-# MODELS ###############
-# Define models #######
 
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 
 # Current folder path
@@ -113,6 +104,8 @@ UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 # Configuration options
 logging.basicConfig(level=logging.INFO)
+
+
 
 # MODELS ###############
 # Define models #######
@@ -144,45 +137,88 @@ class UsageStatistic(db.Model):
     date = db.Column(db.DateTime, default=db.func.CURRENT_TIMESTAMP)
     user = db.relationship("User", backref="usage_statistics")
 
-
-# user roles
-roles_users = db.Table('roles_users',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('role_id', db.Integer, db.ForeignKey('role.id'), primary_key=True)
-)
-
 # Define roles
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
-    users = db.relationship('User', secondary=roles_users, back_populates='roles')
 
+    # New methods and properties for authentication and authorization
+    @property
+    def description(self):
+        return self.description
 
-class User(db.Model, UserMixin):
+# user roles
+roles_users = db.Table(
+    "roles_users",
+    db.Column("user_id", db.Integer(), db.ForeignKey("user.user_id")),
+    db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
+)
+
+class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    is_active = db.Column(db.Boolean, default=False)
-    roles = db.relationship('Role', secondary=roles_users, back_populates='users')
-
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+    fs_uniquifier = db.Column(db.String(255), unique=True)
+    roles = db.relationship(
+        "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
+    )
     
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
     # New columns for reset code and its expiration
     password_reset_code = db.Column(db.String(6))
     password_reset_code_expiration = db.Column(db.DateTime)
     
     # New columns for email verification
+    # New columns for authentication and authorization
     is_active = db.Column(db.Boolean, default=False)
     verification_code = db.Column(db.String(6))
     verification_code_expiration = db.Column(db.DateTime)
 
-#proceeding to remove db stuff and establish flask security
+    # New methods and properties for authentication and authorization
+    @property
+    def active(self):
+        return self.is_active
+
+    def get_id(self):
+        return self.user_id
+
+    def has_role(self, role):
+        return role in [role.name for role in self.roles]
+
+
+
+
+# Define user data store
+class UserDatastore:
+    def __init__(self, db, user_model, role_model):
+        self.db = db
+        self.user_model = user_model
+        self.role_model = role_model
+
+    def find_user(self, **kwargs):
+        return self.user_model.query.filter_by(**kwargs).first()
+
+    def find_role(self, role):
+        return self.role_model.query.filter_by(name=role).first()
+
+    def add_role_to_user(self, user, role):
+        role = self.find_role(role)
+        if role:
+            user.roles.append(role)
+            self.db.session.commit()
+
+    def remove_role_from_user(self, user, role):
+        role = self.find_role(role)
+        if role:
+            user.roles.remove(role)
+            self.db.session.commit()
+
+    def get_user(self, user_id):
+        return self.user_model.query.get(user_id)
+
+    def get_role(self, role_id):
+        return self.role_model.query.get(role_id)
 
 
 
@@ -190,10 +226,24 @@ class User(db.Model, UserMixin):
 password = "supersecretpassword"
 hashed_password = encrypt_password(password)
 
+# Setup Flask-Security
+user_datastore = UserDatastore(db, User, Role)
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+
+# Custom registration form
+class RegistrationForm(Form):
+    username = StringField('Username', [validators.DataRequired()])
+    password = PasswordField('Password', [validators.DataRequired()])
+    # ...
+    # any other fields and validators that you need
+    # ...
+
+
+# Define hashed_password
+password = "supersecretpassword"
+hashed_password = encrypt_password(password)
+
+
 
 # Utils
 # Define utils
