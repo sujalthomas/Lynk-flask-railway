@@ -77,7 +77,7 @@ CORS(
 app.config["MAIL_SERVER"] = "smtp.sendgrid.net"
 app.config["MAIL_PORT"] = 587  # 465 for TLS
 app.config["MAIL_USERNAME"] = "apikey"
-app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_PASSWORD"] = "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"
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
 mail = FlaskMail(app)
