@@ -40,6 +40,11 @@ a {
     color: #e38cb7;
 }
 
+.logo{
+    height: flex;
+    width: 200px;
+}
+
 a:hover,
 a:focus {
     color: #d6619c;
