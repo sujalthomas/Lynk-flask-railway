@@ -262,14 +262,16 @@ def is_api_key_valid(api_key):
 def convert_to_txt(file, file_type):
     if file_type == "docx":
         doc = Document(file)
-        return "\n".join([p.text for p in doc.paragraphs])
+        data = "\n".join([p.text for p in doc.paragraphs])
     elif file_type == "pdf":
         reader = PyPDF2.PdfReader(file)
-        return "\n".join(
+        data = "\n".join(
             [reader.pages[i].extract_text() for i in range(len(reader.pages))]
         )
     else:
         raise ValueError("Unsupported file type")
+    return data.replace('\0', '')
+
 
 
 
@@ -301,7 +303,6 @@ def apiverify():
     except Exception as e:
         logging.error(str(e))
         return jsonify(success=False, message="Invalid API key"), 401
-
 
 user_counters = {}
 
@@ -717,11 +718,18 @@ def login():
     password = data.get("password")
 
     user = User.query.filter_by(email=email).first()
-    if not user or not bcrypt.check_password_hash(user.password, password) or not user.is_active:
-        return jsonify(success=False, message="Invalid email or password"), 401
+    
+    if not user:
+        return jsonify(success=False, message="No account found with this email address."), 404
+
+    if not bcrypt.check_password_hash(user.password, password):
+        return jsonify(success=False, message="Incorrect password."), 401
+
+    if not user.is_active:
+        return jsonify(success=False, message="Your account is not active. Please verify your email or contact support."), 403
 
     token = serializer.dumps({"user": user.user_id}, salt="password-reset")
-    return jsonify(success=True, token=token), 200
+    return jsonify(success=True, token=token, message="Login successful."), 200
 
 
 

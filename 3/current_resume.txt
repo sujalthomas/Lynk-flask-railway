@@ -1,0 +1,46 @@
+.
+.Sujal Thomas Tatipelli
+San Jose,California sujalt1811@gmail.com (669)234-6586 linkedin.com/in/sujal-thomas-tatipelli-b72120161 sujalthomas.com
+EXPERIENCE
+Back-End Developer Intern
+Pikky February 2023 - May 2022Fremont, CA ,
+• Developed an advanced data pipeline by implementing ETL processes using Python and SQL, facilitating the ingestion of data from 
+multiple sources into a centralized data warehouse, thereby improving data accessibility and ensuring data integrity. 
+• Designed and documented a robust data schema for the data warehouse, optimizing decision-making processes and establishing a 
+data dictionary to streamline data management and governance. 
+• Created and deployed a data visualization dashboard using Power BI and Redash, enabling stakeholders to eortlessly interpret 
+complex data and make informed decisions.
+PROJECTS
+Full-Stack Developer @ Lynktools
+https://ask-lynk-env.up.railway.app• June 2023 -August 2023
+• Developed a React Chrome extension along with a Flask web app that utilizes OpenAI to generate the perfect cover letter specic to a 
+job listing in under 20 seconds (The quickest in the market). 
+• The web extension injects elements when on the LinkedIn jobs page, allowing users to extract, sanitize, organize & send a secure API 
+request to the backend server in just one click. 
+• Implemented key security features including API key validation, token-based authentication, & req rate limiting. 
+• Utilized Flask-Mail for email operations, bcrypt for secure password hashing, and SQLAlchemy for database & user management.
+Full-Stack Developer
+Enterprise Softwares @ SJSU• September 2022 - December 2022
+• Engineered a Spring Boot-based cashier application featuring administrative login for barista employees and in-store order 
+processing capabilities.
+• Leveraged GCP for cloud deployment, conguring an external load balancer as an ingress for the cashier application. 
+• Integrated Cloud MySQL db & RabbitMQ to facilitate the messaging queue. 
+• Crafted a custom API for mobile app & storefront deployments, fortied with Kong API Gateway & secured via API Key Authentication.
+Back-End Developer
+Database Management @ SJSU• January 2022 - June 2022
+• Transformed a Figma prototype into a fully functional price comparison website using Node.js & React Native, constructing the 
+database from scratch without relying on pre-existing APIs. 
+• Leveraged the BeautifulSoup4 Python library to scrape over 50,000 records from a multitude of retailer websites, capturing essential 
+market insights on trending products, created a RESTful API, automated tests with Selenium, and integrated with IFTTT.
+EDUCATION
+Bachelor of Engineering, Software Engineering
+Minor in Mathematics• San Jose State University• San Jose, CA• 2022
+• Electives: Machine Learning & BigData / Intro to Cyber Security / Mathematical Modelling / Autonomous Robotics
+INVOLVEMENT
+Tech Lead
+San Jose State University• Google Student Developer Club• September 2020 - December 2021
+• Conducted monthly workshops on Google products such as Flutter, Kotlin, and Google Cloud Platform; managed promotional 
+activities; achieved a 12% monthly growth rate and an 80% student retention rate.
+SKILLS
+Java, Python, Javascript, R, SQL, Matlab, Shell, HTML, Tailwind CSS, React, Node, Express, Flask, Django, Spring Boot, Docker, 
+Kubernetes, GCP, AWS, OpenAI, Zapier, Redis, PandasAI, Tableau, PowerBI, Redash, Jira, Figma, Maven, LangChain, LLama.
