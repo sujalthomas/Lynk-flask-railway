@@ -193,6 +193,20 @@ class User(db.Model):
     def has_role(self, role):
         return role in [role.name for role in self.roles]
 
+# Define blacklisted tokens
+class BlacklistedToken(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+    blacklisted_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @staticmethod
+    def check_blacklist(auth_token):
+        res = BlacklistedToken.query.filter_by(token=str(auth_token)).first()
+        if res:
+            return True
+        else:
+            return False
+
 
 
 
@@ -303,6 +317,201 @@ def apiverify():
     except Exception as e:
         logging.error(str(e))
         return jsonify(success=False, message="Invalid API key"), 401
+
+
+
+# user registration
+@app.route("/request-reset-password", methods=["POST"])
+@limiter.limit(
+    "2 per minute"
+)  # For instance, limit to 2 requests per minute for this route
+def request_reset_password():
+    data = request.get_json()
+    logging.info(f"Hit /request-reset-password with data: {data}")
+    email = data.get("email")
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        logging.warning(f"Password reset attempt for non-existent email: {email}")
+        return jsonify(success=False, message="User not found"), 404
+
+    code = str(random.randint(100000, 999999))
+    user.password_reset_code = code
+    user.password_reset_code_expiration = datetime.utcnow() + timedelta(minutes=30)
+    db.session.commit()
+
+    msg = Message(
+        "Password Reset Code", sender="lynktools@gmail.com", recipients=[email]
+    )
+
+    msg.body = f"Your password reset code is: {code}"
+    try:
+        mail.send(msg)
+    except Exception as e:
+        logging.error(f"Error sending email to {email}: {str(e)}")
+        return jsonify(success=False, message="Error sending email."), 500
+
+    logging.info(f"Sent password reset code to: {email}")
+    return jsonify(success=True, message="Password reset code has been sent."), 200
+
+
+@app.route("/reset-password", methods=["POST"])
+@limiter.limit(
+    "3 per minute"
+)  # For instance, limit to 3 requests per minute for this route
+def reset_password_with_code():
+    data = request.get_json()
+    logging.info(f"Hit /reset-password with data: {data}")
+    email = data.get("email")
+    code = data.get("code")
+    new_password = data.get("newPassword")
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        logging.warning(f"Password reset attempt for non-existent email: {email}")
+        return jsonify(success=False, message="User not found"), 404
+
+    if (
+        user.password_reset_code != code
+        or datetime.utcnow() > user.password_reset_code_expiration
+    ):
+        logging.warning(f"Invalid or expired code used for email: {email}")
+        return jsonify(success=False, message="Invalid or expired code"), 401
+
+    hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+    user.password = hashed_password
+
+    user.password_reset_code = None
+    user.password_reset_code_expiration = None
+    db.session.commit()
+
+    logging.info(f"Password reset successful for: {email}")
+    return jsonify(success=True, message="Password reset successful"), 200
+
+
+
+
+@app.route("/register", methods=["POST"])
+def register():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+    name = data.get("name")
+
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify(success=False, message="User already exists"), 400
+
+    user_role = Role.query.filter_by(name="user").first()
+    if not user_role:
+        user_role = Role(name="user", description="Regular user")
+        db.session.add(user_role)
+        db.session.commit()
+
+    new_user = User(email=email, password=hashed_password, is_active=False)
+    new_user.roles.append(user_role)
+    db.session.add(new_user)
+    db.session.commit()
+
+    # Generate verification code
+    code = str(random.randint(100000, 999999))
+    new_user.verification_code = code
+    new_user.verification_code_expiration = datetime.utcnow() + timedelta(minutes=30)
+    db.session.commit()
+
+    # Send verification code to user's email
+    msg = Message("Verification Code", sender="lynktools@gmail.com", recipients=[email])
+    msg.body = f"Your verification code is: {code}"
+    try:
+        mail.send(msg)
+    except Exception as e:
+        logging.error(f"Error sending email to {email}: {str(e)}")
+        return jsonify(success=False, message="Error sending email."), 500
+
+    return jsonify(success=True, message="Verification code has been sent to your email."), 200
+
+@app.route("/verify", methods=["POST"])
+def verify():
+    data = request.get_json()
+    email = data.get("email")
+    code = data.get("code")
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify(success=False, message="User not found"), 404
+
+    if user.verification_code != code or datetime.utcnow() > user.verification_code_expiration:
+        return jsonify(success=False, message="Invalid or expired code"), 401
+
+    user.is_active = True
+    user.verification_code = None
+    user.verification_code_expiration = None
+    db.session.commit()
+
+    return jsonify(success=True, message="Registration successful"), 200
+
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.get_json()
+    email = data.get("email")
+    password = data.get("password")
+
+    user = User.query.filter_by(email=email).first()
+    
+    if not user:
+        return jsonify(success=False, message="No account found with this email address."), 404
+
+    if not bcrypt.check_password_hash(user.password, password):
+        return jsonify(success=False, message="Incorrect password."), 401
+
+    if not user.is_active:
+        return jsonify(success=False, message="Your account is not active. Please verify your email or contact support."), 403
+
+    token = serializer.dumps({"user": user.user_id}, salt="password-reset")
+    return jsonify(success=True, token=token, message="Login successful."), 200
+
+
+# @app.route("/logout", methods=["POST"])
+# def logout():
+#     token = request.headers.get("Authorization")
+#     try:
+#         data = serializer.loads(token, salt="password-reset", max_age=9600)
+#     except Exception as e:
+#         print(f"Token deserialization error: {e}")
+#         return jsonify(success=False, message="Invalid or expired token"), 401
+    
+#     data = request.get_json()
+#     # Ensure the token belongs to a user
+#     user_id = data.get("user_id")
+
+
+#     decoded_data = serializer.loads(user_id, salt="password-reset", max_age=9600)
+
+#     user_id_decode = decoded_data["user"]
+#     if not user_id_decode:
+#         return jsonify(success=False, message="User not found."), 404
+
+
+#     # If the token is not already blacklisted, add it to the blacklist
+#     if not BlacklistedToken.check_blacklist(token):
+#         blacklist_token = BlacklistedToken(token=token)
+#         try:
+#             db.session.add(blacklist_token)
+#             db.session.commit()
+#         except Exception as e:
+#             return jsonify(success=False, message=f"Failed to logout. {e}"), 500
+
+#     return jsonify(success=True, message="Logout successful."), 200
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    # In the future, potential to invalidate tokens
+    return jsonify(success=True, message="Logout successful."), 200
+
+
+
 
 user_counters = {}
 
@@ -507,74 +716,6 @@ def generate_resume():
     )
 
 
-# user registration
-@app.route("/request-reset-password", methods=["POST"])
-@limiter.limit(
-    "2 per minute"
-)  # For instance, limit to 2 requests per minute for this route
-def request_reset_password():
-    data = request.get_json()
-    logging.info(f"Hit /request-reset-password with data: {data}")
-    email = data.get("email")
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        logging.warning(f"Password reset attempt for non-existent email: {email}")
-        return jsonify(success=False, message="User not found"), 404
-
-    code = str(random.randint(100000, 999999))
-    user.password_reset_code = code
-    user.password_reset_code_expiration = datetime.utcnow() + timedelta(minutes=30)
-    db.session.commit()
-
-    msg = Message(
-        "Password Reset Code", sender="lynktools@gmail.com", recipients=[email]
-    )
-
-    msg.body = f"Your password reset code is: {code}"
-    try:
-        mail.send(msg)
-    except Exception as e:
-        logging.error(f"Error sending email to {email}: {str(e)}")
-        return jsonify(success=False, message="Error sending email."), 500
-
-    logging.info(f"Sent password reset code to: {email}")
-    return jsonify(success=True, message="Password reset code has been sent."), 200
-
-
-@app.route("/reset-password", methods=["POST"])
-@limiter.limit(
-    "3 per minute"
-)  # For instance, limit to 3 requests per minute for this route
-def reset_password_with_code():
-    data = request.get_json()
-    logging.info(f"Hit /reset-password with data: {data}")
-    email = data.get("email")
-    code = data.get("code")
-    new_password = data.get("newPassword")
-
-    user = User.query.filter_by(email=email).first()
-
-    if not user:
-        logging.warning(f"Password reset attempt for non-existent email: {email}")
-        return jsonify(success=False, message="User not found"), 404
-
-    if (
-        user.password_reset_code != code
-        or datetime.utcnow() > user.password_reset_code_expiration
-    ):
-        logging.warning(f"Invalid or expired code used for email: {email}")
-        return jsonify(success=False, message="Invalid or expired code"), 401
-
-    hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
-    user.password = hashed_password
-
-    user.password_reset_code = None
-    user.password_reset_code_expiration = None
-    db.session.commit()
-
-    logging.info(f"Password reset successful for: {email}")
-    return jsonify(success=True, message="Password reset successful"), 200
-
 
 
 @app.route("/upload-resume", methods=["POST"])
@@ -645,94 +786,6 @@ def upload_resume():
         jsonify(success=True, message="File uploaded and converted successfully"),
         200,
     )
-
-
-
-
-
-@app.route("/register", methods=["POST"])
-def register():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
-    name = data.get("name")
-
-    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    user = User.query.filter_by(email=email).first()
-    if user:
-        return jsonify(success=False, message="User already exists"), 400
-
-    user_role = Role.query.filter_by(name="user").first()
-    if not user_role:
-        user_role = Role(name="user", description="Regular user")
-        db.session.add(user_role)
-        db.session.commit()
-
-    new_user = User(email=email, password=hashed_password, is_active=False)
-    new_user.roles.append(user_role)
-    db.session.add(new_user)
-    db.session.commit()
-
-    # Generate verification code
-    code = str(random.randint(100000, 999999))
-    new_user.verification_code = code
-    new_user.verification_code_expiration = datetime.utcnow() + timedelta(minutes=30)
-    db.session.commit()
-
-    # Send verification code to user's email
-    msg = Message("Verification Code", sender="lynktools@gmail.com", recipients=[email])
-    msg.body = f"Your verification code is: {code}"
-    try:
-        mail.send(msg)
-    except Exception as e:
-        logging.error(f"Error sending email to {email}: {str(e)}")
-        return jsonify(success=False, message="Error sending email."), 500
-
-    return jsonify(success=True, message="Verification code has been sent to your email."), 200
-
-@app.route("/verify", methods=["POST"])
-def verify():
-    data = request.get_json()
-    email = data.get("email")
-    code = data.get("code")
-
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        return jsonify(success=False, message="User not found"), 404
-
-    if user.verification_code != code or datetime.utcnow() > user.verification_code_expiration:
-        return jsonify(success=False, message="Invalid or expired code"), 401
-
-    user.is_active = True
-    user.verification_code = None
-    user.verification_code_expiration = None
-    db.session.commit()
-
-    return jsonify(success=True, message="Registration successful"), 200
-
-@app.route("/login", methods=["POST"])
-def login():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
-
-    user = User.query.filter_by(email=email).first()
-    
-    if not user:
-        return jsonify(success=False, message="No account found with this email address."), 404
-
-    if not bcrypt.check_password_hash(user.password, password):
-        return jsonify(success=False, message="Incorrect password."), 401
-
-    if not user.is_active:
-        return jsonify(success=False, message="Your account is not active. Please verify your email or contact support."), 403
-
-    token = serializer.dumps({"user": user.user_id}, salt="password-reset")
-    return jsonify(success=True, token=token, message="Login successful."), 200
-
-
-
 
 
 
