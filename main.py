@@ -296,8 +296,11 @@ def convert_to_txt(file, file_type):
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Home')
+    return render_template('index.html', title='Home' )
 
+@app.route('/google3a556bba71bd41e1')
+def google():
+    return render_template('google3a556bba71bd41e1.html', title='Home' )
     
 
 # Routes ###############
