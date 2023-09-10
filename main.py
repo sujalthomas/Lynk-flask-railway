@@ -357,6 +357,7 @@ def request_reset_password():
     return jsonify(success=True, message="Password reset code has been sent."), 200
 
 
+
 @app.route("/reset-password", methods=["POST"])
 @limiter.limit(
     "3 per minute"
@@ -390,7 +391,6 @@ def reset_password_with_code():
 
     logging.info(f"Password reset successful for: {email}")
     return jsonify(success=True, message="Password reset successful"), 200
-
 
 
 
