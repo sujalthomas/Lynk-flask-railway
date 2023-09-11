@@ -34,7 +34,7 @@ Copyright © All rights Reserved
 body {
     font-family: 'Rubik', sans-serif;
     position: relative;
-    background-image: linear-gradient(to right bottom, #0d1634, #13193d, #1b1c47, #241e4f, #2e2058, #36215e, #3f2164, #49206a, #531e6f, #5e1c74, #691878, #74117b);
+    background-image: linear-gradient(to top, #0a000a, #0a000a, #0a000a, #0a000a, #0a000a);
 }
 
 a {
@@ -74,6 +74,7 @@ h3 {
     color: #633991;
     font-size: 33px;
     font-weight: 500;
+    
 
 }
 
@@ -91,7 +92,6 @@ h5 {
     font-weight: 300;
     color: #633991;
     margin-bottom: 0.7rem;
-    text-shadow: 0 0 15px rgba(255, 255, 255, .5), 0 0 10px rgba(255, 255, 255, .5), 2px 2px 2px rgba(17, 24, 39, 0);
 
 }
 
@@ -276,8 +276,21 @@ header {
 }
 
 .bg-sec{
-    background-image: linear-gradient(to bottom, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30);
+    background-image: linear-gradient(to bottom, #040005, #09010b, #0e030f, #120413, #150516, #180619, #1b081c, #1e091f, #210b23, #250c27, #290d2c, #2d0d30);
 }
+
+.bg-flow{
+    background-image: linear-gradient(to top, #040005, #09010b, #0e030f, #120413, #150516, #180619, #1b081c, #1e091f, #210b23, #250c27, #290d2c, #2d0d30);
+}
+
+.bg-screenshots{
+    background-image: linear-gradient(to bottom, #030003, #0f040f, #180718, #1e0b1f, #240d26, #250d27, #260c29, #270c2a, #230b26, #1f0921, #1c061d, #180319);
+}
+
+.bg-contact{
+    background-image: linear-gradient(to bottom, #220024, #1e001e, #190019, #130013, #0a000a);
+}
+
 
 .tagline {
     font-size: 23px;
@@ -384,7 +397,7 @@ header {
     border-radius: 50%;
     margin-bottom: 1.5rem;
     background-color: #FFF;
-    color: #f5378e;
+    color: #633991;
     font-size: 48px;
     text-align: center;
     line-height: 80px;
@@ -402,10 +415,7 @@ header {
 }
 
 .ui-steps li:hover .circle-icon {
-    background-image: -moz-linear-gradient( 122deg, #e6388e 0%, #fb378e 100%);
-    background-image: -webkit-linear-gradient( 122deg, #e6388e 0%, #fb378e 100%);
-    background-image: -ms-linear-gradient( 122deg, #e6388e 0%, #fb378e 100%);
-    background-image: linear-gradient( 122deg, #e6388e 0%, #fb378e 100%);
+    background-image: linear-gradient(to top, #2d0d30, #2d0d30, #2d0d30, #2d0d30, #2d0d30);
     box-shadow: 0px 9px 32px 0px rgba(0, 0, 0, 0.09);
     color: #FFF;
 }
@@ -610,7 +620,7 @@ header {
     line-height: 50px;
     margin: 0 0.3rem;
     border-radius: 5px;
-    color: #f4c9e2;
+    color: #633991;
     transition: all 0.3s ease;
     box-shadow: 0 0 15px rgba(255, 255, 255, .5), 0 0 10px rgba(255, 255, 255, .5), 2px 2px 2px rgba(17, 24, 39, 0);
 
