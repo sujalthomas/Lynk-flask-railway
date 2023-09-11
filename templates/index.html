@@ -68,17 +68,15 @@ URI     : https://colorlib.com
     <header class="bg-gradient" id="home">
         <div class="container mt-5">
             <h1>Lynk - AI Job Assistant</h1>
-            <p class="tagline"> Harness AI magic to whip up personalized cover letters with a wink and a click! </p>
+            <p class="tagline"> Harness AI magic to whip up personalized cover letters with a click! </p>
         </div>
         <div class="img-holder mt-3"><img src="{{ url_for('static', filename='images/iphonex.png') }}" alt="phone"
                 class="img-fluid"></div>
     </header>
 
-
-    <div class="section light-bg" id="features">
+    <div class="section bg-feat" id="features">
         <div class="container">
             <div class="section-title">
-                <small>HIGHLIGHTS</small>
                 <h3>Discover Lynk Tools</h3>
             </div>
             <div class="row">
@@ -134,10 +132,9 @@ URI     : https://colorlib.com
 
 
 
-    <div class="section light-bg">
+    <div class="section bg-sec">
         <div class="container">
             <div class="section-title">
-                <small>EXCLUSIVE FEATURES</small>
                 <h3>Unlock the Power of Lynk Tools</h3>
             </div>
             <ul class="nav nav-tabs nav-justified" role="tablist">
@@ -272,9 +269,6 @@ URI     : https://colorlib.com
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-4">
-                    <img src="{{ url_for('static', filename='images/iphonex.png') }}" alt="iphone" class="img-fluid">
-                </div>
             </div>
         </div>
     </div>
@@ -302,68 +296,97 @@ URI     : https://colorlib.com
 
 
 
+
     <div class="section pt-0 bg-gradient">
         <div class="container">
-    
+
             <div class="section-title">
-                <small>FAQ</small>
                 <h3>Frequently Asked Questions</h3>
             </div>
-    
+
             <div class="row pt-4">
                 <div class="col-md-6">
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq1" role="button" aria-expanded="false" aria-controls="faq1">
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq1" role="button" aria-expanded="false"
+                        aria-controls="faq1">
                         What sets Lynk Tools apart from other job tools and extensions?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq1" style="color:white;">Lynk Tools integrates directly with LinkedIn, offering a seamless experience to generate tailored cover letters and revamped resumes. With GPT-3.5 Turbo at its core, it ensures your documents resonate with the job description, giving you an edge in the competitive job market.</p>
-    
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq2" role="button" aria-expanded="false" aria-controls="faq2">
+                    <p class="light-font mb-5" id="faq1" style="color:white;">Lynk Tools integrates
+                        directly with LinkedIn, offering a seamless experience to generate tailored cover letters
+                        and revamped resumes. With GPT-3.5 Turbo at its core, it ensures your documents resonate
+                        with the job description, giving you an edge in the competitive job market.</p>
+
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq2" role="button" aria-expanded="false"
+                        aria-controls="faq2">
                         How quickly can I generate a cover letter with Lynk Tools?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq2" style="color:white;">In a staggering 20 seconds or less, you can have a cover letter tailored for a specific LinkedIn job listing. It's all about efficiency and maximizing your chances.</p>
-    
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq3" role="button" aria-expanded="false" aria-controls="faq3">
+                    <p class="light-font mb-5" id="faq2" style="color:white;">In a staggering 20 seconds or
+                        less, you can have a cover letter tailored for a specific LinkedIn job listing. It's all
+                        about efficiency and maximizing your chances.</p>
+
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq3" role="button" aria-expanded="false"
+                        aria-controls="faq3">
                         Is the resume revamping feature accurate?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq3" style="color:white;">While our resume feature is still in beta, it uses advanced algorithms to pick keywords from the job description and adjust your resume to align with the role's requirements. However, as with any tool, we recommend reviewing and fine-tuning the suggestions to best represent your qualifications.</p>
-    
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq4" role="button" aria-expanded="false" aria-controls="faq4">
+                    <p class="light-font mb-5" id="faq3" style="color:white;">While our resume feature is
+                        still in beta, it uses advanced algorithms to pick keywords from the job description and
+                        adjust your resume to align with the role's requirements. However, as with any tool, we
+                        recommend reviewing and fine-tuning the suggestions to best represent your qualifications.
+                    </p>
+
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq4" role="button" aria-expanded="false"
+                        aria-controls="faq4">
                         How does Lynk Tools enhance my LinkedIn profile and job application process?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq4" style="color:white;">With a simple click, Lynk Tools extracts crucial details from job listings, such as company name, job specifics, and even recruiter details, making your application process smoother and more personalized.</p>
+                    <p class="light-font mb-5" id="faq4" style="color:white;">With a simple click, Lynk
+                        Tools extracts crucial details from job listings, such as company name, job specifics, and
+                        even recruiter details, making your application process smoother and more personalized.</p>
                 </div>
-    
+
                 <div class="col-md-6">
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq5" role="button" aria-expanded="false" aria-controls="faq5">
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq5" role="button" aria-expanded="false"
+                        aria-controls="faq5">
                         Are there any costs involved in using Lynk Tools?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq5" style="color:white;">Lynk Tools is entirely free to use! If you find value in our extension, please support our work by leaving a positive review and checking out our other projects.</p>
-    
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq6" role="button" aria-expanded="false" aria-controls="faq6">
+                    <p class="light-font mb-5 " id="faq5" style="color:white;">Lynk Tools is entirely free
+                        to use! If you find value in our extension, please support our work by leaving a positive
+                        review and checking out our other projects.</p>
+
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq6" role="button" aria-expanded="false"
+                        aria-controls="faq6">
                         How secure is my data with Lynk Tools?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq6" style="color:white;">Your privacy is paramount. Lynk Tools incorporates multiple layers of security, ensuring that your data remains protected. We store only essential information and automatically delete everything else for your peace of mind.</p>
-    
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq7" role="button" aria-expanded="false" aria-controls="faq7">
+                    <p class="light-font mb-5 " id="faq6" style="color:white;">Your privacy is paramount.
+                        Lynk Tools incorporates multiple layers of security, ensuring that your data remains
+                        protected. We store only essential information and automatically delete everything else for
+                        your peace of mind.</p>
+
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq7" role="button" aria-expanded="false"
+                        aria-controls="faq7">
                         How can I provide feedback or get support for Lynk Tools?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq7" style="color:white;">We value user feedback! If you encounter any issues, have suggestions for improvement, or wish to access the GPT-4 usability model, please reach out to our support team through our official website or the extension's feedback form.</p>
-    
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq8" role="button" aria-expanded="false" aria-controls="faq8">
+                    <p class="light-font mb-5 " id="faq7" style="color:white;">We value user feedback! If
+                        you encounter any issues, have suggestions for improvement, or wish to access the GPT-4
+                        usability model, please reach out to our support team through our official website or the
+                        extension's feedback form.</p>
+
+                    <h4 class="mb-3" data-toggle="collapse" href="#faq8" role="button" aria-expanded="false"
+                        aria-controls="faq8">
                         I have access to GPT-4. How can I utilize it with Lynk Tools?
                     </h4>
-                    <p class="light-font mb-5 collapse" id="faq8" style="color:white;">If you have access to GPT-4, that's great! Please email us, and we'll guide you on how to integrate GPT-4's enhanced capabilities with Lynk Tools.</p>
+                    <p class="light-font mb-5" id="faq8" style="color:white;">If you have access to GPT-4,
+                        that's great! Please email us, and we'll guide you on how to integrate GPT-4's enhanced
+                        capabilities with Lynk Tools.</p>
                 </div>
             </div>
         </div>
     </div>
     <!-- // end .section -->
-    
-    
 
 
 
-    <div class="light-bg py-5 " id="contact">
+
+
+    <div class="dark-bg py-5  " id="contact">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 text-center text-lg-left">
@@ -372,7 +395,7 @@ URI     : https://colorlib.com
                     <div class=" d-block d-sm-inline-block">
                         <p class="mb-2">
                             <span class="ti-email mr-2"></span> <a class="mr-4"
-                                href="mailto:support@mobileapp.com">lynktools@gmail.com</a>
+                                href="mailto:lynktools@gmail.com">lynktools@gmail.com</a>
                         </p>
                     </div>
 
@@ -396,6 +419,7 @@ URI     : https://colorlib.com
                 Lynk Tools by <a href="https://sujalthomas.com">Sujal Thomas</a></small></p>
 
     </footer>
+
 
     <!-- jQuery and Bootstrap -->
     <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
