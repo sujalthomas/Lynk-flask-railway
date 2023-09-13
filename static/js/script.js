@@ -76,6 +76,32 @@ $(function() {
             }
         }
     });
+    
+    $(document).ready(function() {
+        $(".scroll-to-next").click(function() {
+            var currentScrollTop = $(window).scrollTop();
+            var nextSection = null;
+    
+            // Find the next section after the current viewport's position
+            $('section, div').each(function() {
+                if ($(this).offset().top > currentScrollTop) {
+                    nextSection = $(this);
+                    return false; // breaks out of the .each() loop
+                }
+            });
+    
+            // If there's a next section, scroll to it
+            if (nextSection) {
+                $('html, body').animate({
+                    scrollTop: nextSection.offset().top + 500
+                }, 1000);
+                
+            }
+        });
+    });
+    
+    
+    
     /*-----------------------------------
      * OWL CAROUSEL
      *-----------------------------------*/
