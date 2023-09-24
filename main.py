@@ -301,6 +301,10 @@ def index():
 @app.route('/google3a556bba71bd41e1.html')
 def google():
     return render_template('google3a556bba71bd41e1.html', title='Home' )
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html', title='Privacy' )
     
 
 # Routes ###############
