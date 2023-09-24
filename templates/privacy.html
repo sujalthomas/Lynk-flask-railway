@@ -22,14 +22,13 @@
 <body class="max-w-3xl mx-auto bg-white p-8 shadow-md rounded-md p-10 >
 
     <!-- Google tag (gtag.js) -->
-<script async src=" https://www.googletagmanager.com/gtag/js?id=G-FN4RSGCGQ5">
-    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_tag_id }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
-        gtag('config', 'G-FN4RSGCGQ5');
+    
+        gtag('config', '{{ google_tag_id }}');
     </script>
 
     <h1>Privacy Policy</h1>

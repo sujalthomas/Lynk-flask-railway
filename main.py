@@ -296,11 +296,11 @@ def convert_to_txt(file, file_type):
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Home')
+    return render_template('index.html', title='Home', google_tag_id='G-FN4RSGCGQ5')
 
 @app.route('/google3a556bba71bd41e1.html')
 def google():
-    return render_template('google3a556bba71bd41e1.html', title='Home' )
+    return render_template('google3a556bba71bd41e1.html', title='Home', google_tag_id='G-FN4RSGCGQ5' )
 
 @app.route('/privacy')
 def privacy():
