@@ -280,7 +280,7 @@ def convert_to_txt(file, file_type):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', title='Home')
 
     
 
