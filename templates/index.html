@@ -3,13 +3,13 @@
 
 <head>
 
-    <title>{{ Home }} Lynk - AI Job Assistant</title>
+    <title>Job Jolt Backend</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Lynk - AI Job Assistant">
-    <meta name="keywords" content="HTML5, bootstrap, mobile, app, landing, ios, android, responsive">
+    <meta name="description" content="Job Jolt Backend">
+    <meta name="keywords" content="backend, settings, job jolt">
 
     <!-- Font -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
@@ -19,15 +19,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <!-- Themify Icons -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/themify-icons.css') }}">
-    <!-- Owl carousel -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
     <!-- Main css -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    <!-- Lightbox2 CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
 
-<!-- Google Tag Manager -->
+
+    <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -38,453 +34,48 @@
 
 </head>
 
+<body class="bg-gradient">
 
-
-<body data-spy="scroll" data-target="#navbar" data-offset="30">
-
-
-<!-- Google Tag Manager (noscript) -->
+    <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MJSBNN9D"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
 
-    <!-- Nav Menu -->
-
-    <div class="nav-menu fixed-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <nav class="navbar navbar-dark navbar-expand-lg">
-                        <a class="navbar-brand" href="index.html"><img class="logo"
-                                src="{{ url_for('static', filename='images/meow.png') }}" class="img-fluid"
-                                alt="logo"></a> <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbar" aria-controls="navbar" aria-expanded="false"
-                            aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-                        <div class="collapse navbar-collapse" id="navbar">
-                            <ul class="navbar-nav ml-auto">
-                                <li class="nav-item"> <a class="nav-link active" href="#home">HOME <span
-                                            class="sr-only">(current)</span></a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="#features">FEATURES</a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="#gallery">GALLERY</a> </li>
-                                <li class="nav-item"> <a class="nav-link" href="#contact">CONTACT</a> </li>
-                                <li class="nav-item"><a href="#" ###
-                                        class="btn btn-outline-light my-3 my-sm-0 ml-lg-3">Add to Chrome!</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-
-        </div>
-    </div>
 
 
 
-
-    <header class="bg-gradient" id="home">
-        <div class="container mt-5">
-            <h1>Lynk - AI Job Assistant</h1>
-            <p class="tagline"> Harness AI magic to whip up personalized cover letters with a click! </p>
-
-
-        </div>
-        <div class="img-holder mt-3"><img src="{{ url_for('static', filename='images/landing.png') }}" alt="mac"
-                class="img-fluid">
-        </div>
-
-
-    </header>
-
-
-
-    <div class="section bg-feat" id="features">
-        <div class="container">
-            <div class="section-title">
-                <h3>Discover Lynk Tools</h3>
-            </div>
-            <div class="row">
-                <div class="col-12 col-lg-4">
-                    <div class="card features">
-                        <div class="card-body">
-                            <div class="media">
-                                <span class="ti-bolt gradient-fill ti-3x mr-3"></span>
-                                <div class="media-body">
-                                    <h4 class="card-title">AI-Powered</h4>
-                                    <p class="card-text">Leverage the power of AI to craft impeccable cover letters
-                                        tailored to LinkedIn job listings.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-4">
-                    <div class="card features">
-                        <div class="card-body">
-                            <div class="media">
-                                <span class="ti-linkedin gradient-fill ti-3x mr-3"></span>
-                                <div class="media-body">
-                                    <h4 class="card-title">Integrated</h4>
-                                    <p class="card-text">Experience seamless integration directly on the LinkedIn job
-                                        page with our extension's features.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-4">
-                    <div class="card features">
-                        <div class="card-body">
-                            <div class="media">
-                                <span class="ti-time gradient-fill ti-3x mr-3"></span>
-                                <div class="media-body">
-                                    <h4 class="card-title">Blazing Fast</h4>
-                                    <p class="card-text">Craft the perfect cover letter in mere seconds, ensuring you
-                                        never miss an opportunity.</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- // end .section -->
-
-
-
-
-
-    <div class="section bg-sec">
-        <div class="container">
-            <div class="section-title">
-                <h3>Unlock the Power of Lynk Tools</h3>
-            </div>
-            <ul class="nav nav-tabs nav-justified" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#coverletters">Cover Letters</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#resume">Resume Wizardry</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#backend">Backend Brilliance</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#security">Fortified Security</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="coverletters">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <img src="{{ url_for('static', filename='images/graphic.png') }}" alt="graphic"
-                            class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                        <div>
-                            <h2>Cover Letters: Your Personalized Pitch in a Click</h2>
-                            <p class="lead">Harness the power of Lynk Tools to create the ultimate first impression.</p>
-                            <p>With just a single click on the LinkedIn job page, our extension dives deep, extracting
-                                pivotal details such as the company name, job specifics, and even the recruiter's name
-                                when available. Within a breathtaking 20 seconds, experience the magic of a cover letter
-                                tailored just for you, weaving elements from your own resume to present you in the best
-                                possible light. It's not just a cover letter; it's your personal pitch, refined to
-                                perfection.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="resume">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <div>
-                            <h2>Resume Wizardry: Tailored to Stand Out</h2>
-                            <p class="lead">Ever wished your resume could adapt itself to the job you're applying for?
-                                With Lynk Tools, this isn't a wish anymore; it's reality.</p>
-                            <p>Our one-of-a-kind Resume button analyses the job description, picks up keywords, and
-                                rewords your resume to align seamlessly with the role's requirements. While this feature
-                                is still in beta, it's designed with the vision to ensure your resume isn't just seen,
-                                but remembered. Experience a resume that evolves with every job application, making you
-                                the ideal fit time and again.</p>
-                        </div>
-                        <img src="{{ url_for('static', filename='images/graphic.png') }}" alt="graphic"
-                            class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="backend">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <img src="{{ url_for('static', filename='images/graphic.png') }}" alt="graphic"
-                            class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                        <div>
-                            <h2>Backend Brilliance: Seamless Power Unleashed</h2>
-                            <p class="lead">Delve deeper and witness the strength of Lynk Tools.</p>
-                            <p>Our Flask backend is more than just smooth operations—it's the hub of our innovation.
-                                Each interaction showcases its robustness, from maintaining API key settings to
-                                delivering seamless frontend experiences. Beneath the surface, a technological
-                                powerhouse ensures everything runs flawlessly.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="security">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <div>
-                            <h2>Fortified Security: Your Trust, Our Commitment</h2>
-                            <p class="lead">In the digital age, trust is paramount—and we don't take it lightly.</p>
-                            <p>Lynk Tools is more than just a tool; it's a vault. Our sophisticated security measures,
-                                from bcrypt encryptions to token-based authentications, ensure your data remains
-                                uncompromised. What's more, our commitment to your privacy means we retain only
-                                essential data. The rest? Auto-deleted, because your peace of mind is at the heart of
-                                our innovation.</p>
-                        </div>
-                        <img src="{{ url_for('static', filename='images/graphic.png') }}" alt="graphic"
-                            class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- // end .section -->
-
-
-
-
-
-    <div class="section bg-flow">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-md-8 d-flex align-items-center">
-                    <ul class="list-unstyled ui-steps">
-                        <li class="media">
-                            <div class="circle-icon mr-4">1</div>
-                            <div class="media-body">
-                                <h5>Install Lynk Tools</h5>
-                                <p>Add the Lynk Tools Chrome extension to your browser and begin your journey to smarter
-                                    job applications.</p>
-                            </div>
-                        </li>
-                        <li class="media my-4">
-                            <div class="circle-icon mr-4">2</div>
-                            <div class="media-body">
-                                <h5>Quick Login & Setup</h5>
-                                <p>After installation, you'll be redirected for a swift login. Use the extension popup
-                                    panel to input your OpenAI API key and upload your resume.</p>
-                            </div>
-                        </li>
-                        <li class="media">
-                            <div class="circle-icon mr-4">3</div>
-                            <div class="media-body">
-                                <h5>One-Click Application on LinkedIn</h5>
-                                <p>On any LinkedIn job page, you'll see two buttons courtesy of Lynk Tools. Click to
-                                    generate a tailored cover letter or a revamped resume.</p>
-                            </div>
-                        </li>
-                        <li class="media my-4">
-                            <div class="circle-icon mr-4">4</div>
-                            <div class="media-body">
-                                <h5>Experience AI Magic</h5>
-                                <p>Watch as the extension extracts key job details and crafts personalized application
-                                    materials in seconds.</p>
-                            </div>
-                        </li>
-                        <li class="media">
-                            <div class="circle-icon mr-4">5</div>
-                            <div class="media-body">
-                                <h5>Submit & Shine</h5>
-                                <p>With your AI-enhanced cover letter and resume, you're ready to stand out in the
-                                    application pool!</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- // end .section -->
-
-
-
-    <div class="section bg-screenshots" id="gallery">
-        <div class="container">
-            <div class="section-title">
-                <h3>App Screenshots</h3>
-            </div>
-
-            <div class="img-gallery owl-carousel owl-theme">
-                <a href="/static/images/screen1.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen1.png" alt="image1">
+    <div class="overlay"></div>
+    <div class="stars" aria-hidden="true"></div>
+    <div class="starts2" aria-hidden="true"></div>
+    <div class="stars3" aria-hidden="true"></div>
+    <main class="main">
+        <section class="contact">
+            <h1 class="title"><a href="https://job-jolt-nextjs.vercel.app/">Job Jolt</a> Back End</h1>
+            <h2 class="sub-title">Lives here </h2>
+            <div class="row flex">
+                <a href="https://github.com/sujalthomas" target="_blank" class="subtwo-title">
+                    <span class="ti-github text-white"></span>
                 </a>
-                <a href="/static/images/screen2.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen2.png" alt="image2">
+                <a href="https://www.linkedin.com/in/sujal-t-b72120161/" target="_blank" class="subtwo-title">
+                    <span class="ti-linkedin text-white"></span>
                 </a>
-                <a href="/static/images/screen3.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen3.png" alt="image3">
-                </a>
-                <a href="/static/images/screen4.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen4.png" alt="image4">
-                </a>
-                <a href="/static/images/screen5.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen5.png" alt="image4">
-                </a>
-                <a href="/static/images/screen6.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen6.png" alt="image4">
-                </a>
-                <a href="/static/images/screen7.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen7.png" alt="image4">
-                </a>
-                <a href="/static/images/screen8.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen8.png" alt="image4">
-                </a>
-                <a href="/static/images/screen9.png" data-lightbox="gallery-set">
-                    <img src="/static/images/screen9.png" alt="image4">
+                <a href="https://www.sujalthomas.com/" target="_blank" class="subtwo-title">
+                    <span class="ti-world text-white"></span>
                 </a>
             </div>
+        </section>
+    </main>
+    
+    
 
-        </div>
+    
+    
 
-    </div>
-    <!-- // end .section -->
-
-
-
-
-
-
-    <div class="section pt-0 bg-faq">
-        <div class="container">
-
-            <div class="section-title">
-                <h3>Frequently Asked Questions</h3>
-            </div>
-
-            <div class="row pt-4">
-                <div class="col-md-6">
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq1" role="button" aria-expanded="false"
-                        aria-controls="faq1">
-                        What sets Lynk Tools apart from other job tools and extensions?
-                    </h4>
-                    <p class="light-font mb-5" id="faq1" style="color:white;">Lynk Tools integrates
-                        directly with LinkedIn, offering a seamless experience to generate tailored cover letters
-                        and revamped resumes. With GPT-3.5 Turbo at its core, it ensures your documents resonate
-                        with the job description, giving you an edge in the competitive job market.</p>
-
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq2" role="button" aria-expanded="false"
-                        aria-controls="faq2">
-                        How quickly can I generate a cover letter with Lynk Tools?
-                    </h4>
-                    <p class="light-font mb-5" id="faq2" style="color:white;">In a staggering 20 seconds or
-                        less, you can have a cover letter tailored for a specific LinkedIn job listing. It's all
-                        about efficiency and maximizing your chances.</p>
-
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq3" role="button" aria-expanded="false"
-                        aria-controls="faq3">
-                        Is the resume revamping feature accurate?
-                    </h4>
-                    <p class="light-font mb-5" id="faq3" style="color:white;">While our resume feature is
-                        still in beta, it uses advanced algorithms to pick keywords from the job description and
-                        adjust your resume to align with the role's requirements. However, as with any tool, we
-                        recommend reviewing and fine-tuning the suggestions to best represent your qualifications.
-                    </p>
-
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq4" role="button" aria-expanded="false"
-                        aria-controls="faq4">
-                        How does Lynk Tools enhance my LinkedIn profile and job application process?
-                    </h4>
-                    <p class="light-font mb-5" id="faq4" style="color:white;">With a simple click, Lynk
-                        Tools extracts crucial details from job listings, such as company name, job specifics, and
-                        even recruiter details, making your application process smoother and more personalized.</p>
-                </div>
-
-                <div class="col-md-6">
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq5" role="button" aria-expanded="false"
-                        aria-controls="faq5">
-                        Are there any costs involved in using Lynk Tools?
-                    </h4>
-                    <p class="light-font mb-5 " id="faq5" style="color:white;">Lynk Tools is entirely free
-                        to use! If you find value in our extension, please support our work by leaving a positive
-                        review and checking out our other projects.</p>
-
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq6" role="button" aria-expanded="false"
-                        aria-controls="faq6">
-                        How secure is my data with Lynk Tools?
-                    </h4>
-                    <p class="light-font mb-5 " id="faq6" style="color:white;">Your privacy is paramount.
-                        Lynk Tools incorporates multiple layers of security, ensuring that your data remains
-                        protected. We store only essential information and automatically delete everything else for
-                        your peace of mind.</p>
-
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq7" role="button" aria-expanded="false"
-                        aria-controls="faq7">
-                        How can I provide feedback or get support for Lynk Tools?
-                    </h4>
-                    <p class="light-font mb-5 " id="faq7" style="color:white;">We value user feedback! If
-                        you encounter any issues, have suggestions for improvement, or wish to access the GPT-4
-                        usability model, please reach out to our support team through our official website or the
-                        extension's feedback form.</p>
-
-                    <h4 class="mb-3" data-toggle="collapse" href="#faq8" role="button" aria-expanded="false"
-                        aria-controls="faq8">
-                        I have access to GPT-4. How can I utilize it with Lynk Tools?
-                    </h4>
-                    <p class="light-font mb-5" id="faq8" style="color:white;">If you have access to GPT-4,
-                        that's great! Please email us, and we'll guide you on how to integrate GPT-4's enhanced
-                        capabilities with Lynk Tools.</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- // end .section -->
-
-
-
-
-
-    <div class="bg-contact py-5  " id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 text-center text-lg-left">
-                    <p class="mb-2"> <span class="ti-location-pin mr-2"></span> SAN JOSE, CA
-                    </p>
-                    <div class=" d-block d-sm-inline-block">
-                        <p class="mb-2">
-                            <span class="ti-email mr-2"></span> <a class="mr-4"
-                                href="mailto:lynktools@gmail.com">lynktools@gmail.com</a>
-                        </p>
-                    </div>
-
-                </div>
-                <div class="col-lg-6">
-                    <div class="social-icons">
-                        <a href="https://www.linkedin.com/in/sujal-thomas-tatipelli-b72120161/"><span
-                                class="ti-linkedin"></span></a>
-                        <a href="https://github.com/sujalthomas"><span class="ti-github"></span></a>
-                        <a href="https://www.instagram.com/sujal.ts/"><span class="ti-instagram"></span></a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-    <!-- // end .section -->
-    <footer class="my-5 text-center">
-        <!-- Copyright removal is not prohibited! -->
-        <p class="mb-2"><small>COPYRIGHT © 2023. ALL RIGHTS RESERVED.
-                Lynk Tools by <a href="https://www.sujalthomas.com">Sujal Thomas</a></small></p>
-        <p class="mb-2"><small>Privacy policy available at <a
-                    href="https://lynk.up.railway.app/privacy">Privacy</a></small></p>
-    </footer>
-
-
-
-    <button class="scroll-to-next">
-        <span class="ti-arrow-down"></span>
-    </button>
 
     <!-- jQuery and Bootstrap -->
     <script src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-    <!-- Plugins JS -->
-    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
