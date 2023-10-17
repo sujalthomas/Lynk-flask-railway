@@ -573,10 +573,10 @@ def listen():
                     "content": f"Using this resume, {resume}, and this job listing, {job_listing}, craft a cover letter that doesn't include addresses but highlights the candidate's fit for the role. Ensure it includes the candidate's name, email, phone number, and LinkedIn profile. Also, only include the company name {company_name}, followed by recruiter's name {recruiter} and today's date {date}. No place holder text is allowed, if recruiters name is not found use 'Dear Hiring Manager.' ",
                 },
             ],
-            temperature=1.3,
+            temperature=0.7,
             top_p=0.9,
-            max_tokens=700,
-            frequency_penalty=0.5,
+            max_tokens=1000,
+            frequency_penalty=-0.2,
             presence_penalty=0.5,
         )
     except openai.error.OpenAIError as e:
@@ -673,10 +673,10 @@ def generate_resume():
                     "content": f"Given this original resume: {resume}, and this job description: {job_description}, please reword the resume to better fit the job requirements.",
                 },
             ],
-            temperature=1.3,
+            temperature=0.7,
             top_p=0.9,
             max_tokens=1000,
-            frequency_penalty=0.5,
+            frequency_penalty=-0.2,
             presence_penalty=0.5,
         )
     except openai.error.OpenAIError as e:
