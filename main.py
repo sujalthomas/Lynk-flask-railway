@@ -1,16 +1,16 @@
 from flask import Flask, render_template
 from flask import Flask, request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
-from flask_mail import Mail as FlaskMail, Message 
+from flask_mail import Mail as FlaskMail, Message
 from flask_session import Session
 from flask_bcrypt import Bcrypt
-import os , random , secrets
+import os, random, secrets
 from dotenv import load_dotenv
 import redis
 import PyPDF2
-from docx import Document 
+from docx import Document
 from flask_cors import CORS
-import logging 
+import logging
 from itsdangerous import URLSafeTimedSerializer
 from flask_limiter import Limiter
 import logging
@@ -20,7 +20,7 @@ from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash as encrypt_password
 from flask_mail import Message
 from http import HTTPStatus
-import re , io
+import re, io
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import Form, StringField, PasswordField, validators
 
@@ -66,7 +66,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-
 CORS(
     app,
     resources={r"/*": {"origins": ["https://www.linkedin.com"]}},
@@ -77,7 +76,9 @@ CORS(
 app.config["MAIL_SERVER"] = "smtp.sendgrid.net"
 app.config["MAIL_PORT"] = 587  # 465 for TLS
 app.config["MAIL_USERNAME"] = "apikey"
-app.config["MAIL_PASSWORD"] = "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"
+app.config[
+    "MAIL_PASSWORD"
+] = "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"
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
 mail = FlaskMail(app)
@@ -89,25 +90,27 @@ sess.init_app(app)
 mail = FlaskMail(app)
 
 
-# Session configurations 
-app.config["REDIS_URL"] = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
+# Session configurations
+app.config[
+    "REDIS_URL"
+] = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
 
-REDIS_URL = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
+REDIS_URL = (
+    "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
+)
 
 
 limiter = Limiter(
     app=app,
     key_func=get_remote_address,
     default_limits=["5 per minute"],
-    storage_uri=REDIS_URL
+    storage_uri=REDIS_URL,
 )
 
 
 # Generate DB tables
 with app.app_context():
     db.create_all()
-
-
 
 
 # Current folder path
@@ -117,11 +120,11 @@ UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.INFO)
 
 
-
 # MODELS ###############
 # Define models #######
 
-#cvs generated
+
+# cvs generated
 class CoverLetter(db.Model):
     cover_letter_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"), nullable=False)
@@ -132,6 +135,7 @@ class CoverLetter(db.Model):
     file_path = db.Column(db.String(255))
     user = db.relationship("User", backref="cover_letters")
 
+
 # resumes uploaded
 class Resume(db.Model):
     resume_id = db.Column(db.Integer, primary_key=True)
@@ -140,6 +144,7 @@ class Resume(db.Model):
     upload_date = db.Column(db.DateTime, default=datetime.utcnow)
     user = db.relationship("User", backref="resumes")
 
+
 # usage statistics
 class UsageStatistic(db.Model):
     stat_id = db.Column(db.Integer, primary_key=True)
@@ -147,6 +152,7 @@ class UsageStatistic(db.Model):
     action = db.Column(db.String(50))
     date = db.Column(db.DateTime, default=db.func.CURRENT_TIMESTAMP)
     user = db.relationship("User", backref="usage_statistics")
+
 
 # Define roles
 class Role(db.Model):
@@ -162,6 +168,7 @@ roles_users = db.Table(
     db.Column("role_id", db.Integer(), db.ForeignKey("role.id")),
 )
 
+
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
@@ -171,11 +178,11 @@ class User(db.Model):
     roles = db.relationship(
         "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
     )
-    
+
     # New columns for reset code and its expiration
     password_reset_code = db.Column(db.String(6))
     password_reset_code_expiration = db.Column(db.DateTime)
-    
+
     # New columns for email verification
     # New columns for authentication and authorization
     is_active = db.Column(db.Boolean, default=False)
@@ -193,6 +200,7 @@ class User(db.Model):
     def has_role(self, role):
         return role in [role.name for role in self.roles]
 
+
 # Define blacklisted tokens
 class BlacklistedToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -206,8 +214,6 @@ class BlacklistedToken(db.Model):
             return True
         else:
             return False
-
-
 
 
 # Define user data store
@@ -242,7 +248,6 @@ class UserDatastore:
         return self.role_model.query.get(role_id)
 
 
-
 # Define hashed_password
 password = "supersecretpassword"
 hashed_password = encrypt_password(password)
@@ -253,8 +258,8 @@ user_datastore = UserDatastore(db, User, Role)
 
 # Custom registration form
 class RegistrationForm(Form):
-    username = StringField('Username', [validators.DataRequired()])
-    password = PasswordField('Password', [validators.DataRequired()])
+    username = StringField("Username", [validators.DataRequired()])
+    password = PasswordField("Password", [validators.DataRequired()])
     # ...
     # any other fields and validators that you need
     # ...
@@ -273,6 +278,7 @@ def is_api_key_valid(api_key):
     else:
         return True
 
+
 def convert_to_txt(file, file_type):
     if file_type == "docx":
         doc = Document(file)
@@ -284,9 +290,7 @@ def convert_to_txt(file, file_type):
         )
     else:
         raise ValueError("Unsupported file type")
-    return data.replace('\0', '')
-
-
+    return data.replace("\0", "")
 
 
 # Routes ###############
@@ -294,18 +298,20 @@ def convert_to_txt(file, file_type):
 # api key verification
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html', title='Home' )
+    return render_template("index.html", title="Home")
 
-@app.route('/google3a556bba71bd41e1.html')
+
+@app.route("/google3a556bba71bd41e1.html")
 def google():
-    return render_template('google3a556bba71bd41e1.html', title='Home' )
+    return render_template("google3a556bba71bd41e1.html", title="Home")
 
-@app.route('/privacy')
+
+@app.route("/privacy")
 def privacy():
-    return render_template('privacy.html', title='Privacy' )
-    
+    return render_template("privacy.html", title="Privacy")
+
 
 # Routes ###############
 # Define routes #######
@@ -324,7 +330,6 @@ def apiverify():
     except Exception as e:
         logging.error(str(e))
         return jsonify(success=False, message="Invalid API key"), 401
-
 
 
 # user registration
@@ -361,7 +366,6 @@ def request_reset_password():
     return jsonify(success=True, message="Password reset code has been sent."), 200
 
 
-
 @app.route("/reset-password", methods=["POST"])
 @limiter.limit(
     "3 per minute"
@@ -386,7 +390,7 @@ def reset_password_with_code():
         logging.warning(f"Invalid or expired code used for email: {email}")
         return jsonify(success=False, message="Invalid or expired code"), 401
 
-    hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+    hashed_password = bcrypt.generate_password_hash(new_password).decode("utf-8")
     user.password = hashed_password
 
     user.password_reset_code = None
@@ -397,7 +401,6 @@ def reset_password_with_code():
     return jsonify(success=True, message="Password reset successful"), 200
 
 
-
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
@@ -405,7 +408,7 @@ def register():
     password = data.get("password")
     name = data.get("name")
 
-    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
 
     user = User.query.filter_by(email=email).first()
     if user:
@@ -437,7 +440,11 @@ def register():
         logging.error(f"Error sending email to {email}: {str(e)}")
         return jsonify(success=False, message="Error sending email."), 500
 
-    return jsonify(success=True, message="Verification code has been sent to your email."), 200
+    return (
+        jsonify(success=True, message="Verification code has been sent to your email."),
+        200,
+    )
+
 
 @app.route("/verify", methods=["POST"])
 def verify():
@@ -449,7 +456,10 @@ def verify():
     if not user:
         return jsonify(success=False, message="User not found"), 404
 
-    if user.verification_code != code or datetime.utcnow() > user.verification_code_expiration:
+    if (
+        user.verification_code != code
+        or datetime.utcnow() > user.verification_code_expiration
+    ):
         return jsonify(success=False, message="Invalid or expired code"), 401
 
     user.is_active = True
@@ -459,6 +469,7 @@ def verify():
 
     return jsonify(success=True, message="Registration successful"), 200
 
+
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
@@ -466,15 +477,24 @@ def login():
     password = data.get("password")
 
     user = User.query.filter_by(email=email).first()
-    
+
     if not user:
-        return jsonify(success=False, message="No account found with this email address."), 404
+        return (
+            jsonify(success=False, message="No account found with this email address."),
+            404,
+        )
 
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify(success=False, message="Incorrect password."), 401
 
     if not user.is_active:
-        return jsonify(success=False, message="Your account is not active. Please verify your email or contact support."), 403
+        return (
+            jsonify(
+                success=False,
+                message="Your account is not active. Please verify your email or contact support.",
+            ),
+            403,
+        )
 
     token = serializer.dumps({"user": user.user_id}, salt="password-reset")
     return jsonify(success=True, token=token, message="Login successful."), 200
@@ -488,7 +508,7 @@ def login():
 #     except Exception as e:
 #         print(f"Token deserialization error: {e}")
 #         return jsonify(success=False, message="Invalid or expired token"), 401
-    
+
 #     data = request.get_json()
 #     # Ensure the token belongs to a user
 #     user_id = data.get("user_id")
@@ -512,12 +532,11 @@ def login():
 
 #     return jsonify(success=True, message="Logout successful."), 200
 
+
 @app.route("/logout", methods=["POST"])
 def logout():
     # In the future, potential to invalidate tokens
     return jsonify(success=True, message="Logout successful."), 200
-
-
 
 
 user_counters = {}
@@ -566,17 +585,19 @@ def listen():
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a helpful assistant that will craft a tailored cover letter using a resume and a job listing. Your goal is to create a compelling cover letter that showcases the candidate's skills and experiences, aligning them with the job's requirements.",
+                    "content": "You are a helpful assistant tasked with crafting a tailored cover letter using a candidate's resume and a specific job listing. The cover letter should align the candidate's skills and experiences with the job's requirements.",
                 },
+                {"role": "user", "content": f"Here's the resume: {resume}."},
+                {"role": "user", "content": f"Here's the job listing: {job_listing}."},
                 {
                     "role": "user",
-                    "content": f"Using this resume, {resume}, and this job listing, {job_listing}, craft a cover letter that doesn't include addresses but highlights the candidate's fit for the role. Ensure it includes the candidate's name, email, phone number, and LinkedIn profile. Also, only include the company name {company_name}, followed by recruiter's name {recruiter} and today's date {date}. No place holder text is allowed, if recruiters name is not found use 'Dear Hiring Manager.' ",
+                    "content": f"Create a cover letter that includes the candidate's name, email, phone number, and LinkedIn profile. The letter should address {recruiter if recruiter else 'Dear Hiring Manager'}, and mention the company name {company_name}. The date to be included is {date}. Note: Do not include any addresses or placeholder text in the letter.",
                 },
             ],
-            temperature=1.3,
+            temperature=0.7,
             top_p=0.9,
             max_tokens=700,
-            frequency_penalty=0.5,
+            frequency_penalty=-0.2,
             presence_penalty=0.5,
         )
     except openai.error.OpenAIError as e:
@@ -666,17 +687,22 @@ def generate_resume():
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a helpful assistant that will reword a resume to better align it with a job description. Your goal is to highlight the candidate's skills and experiences, making them match the job's requirements as closely as possible.",
+                    "content": "You are a helpful assistant designed to reword and optimize resumes to better fit specific job descriptions. Your goal is to ensure that the candidate's skills and experiences are highlighted in a way that matches the job's requirements.",
+                },
+                {"role": "user", "content": f"Here's the original resume: {resume}."},
+                {
+                    "role": "user",
+                    "content": f"Here's the job description for which the resume needs to be optimized: {job_description}.",
                 },
                 {
                     "role": "user",
-                    "content": f"Given this original resume: {resume}, and this job description: {job_description}, please reword the resume to better fit the job requirements.",
+                    "content": "Please reword the resume to best align it with the job requirements, ensuring that relevant skills and experiences are emphasized.",
                 },
             ],
-            temperature=1.3,
+            temperature=0.7,
             top_p=0.9,
             max_tokens=1000,
-            frequency_penalty=0.5,
+            frequency_penalty=-0.2,
             presence_penalty=0.5,
         )
     except openai.error.OpenAIError as e:
@@ -721,8 +747,6 @@ def generate_resume():
         download_name=filename,
         mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     )
-
-
 
 
 @app.route("/upload-resume", methods=["POST"])
@@ -795,6 +819,5 @@ def upload_resume():
     )
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True, port=os.getenv("PORT", default=5000))
