@@ -1,10 +1,9 @@
-from flask import Flask, render_template
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail as FlaskMail, Message 
 from flask_session import Session
 from flask_bcrypt import Bcrypt
-import os , random , secrets
+import os, random, secrets
 from dotenv import load_dotenv
 import redis
 import PyPDF2
@@ -13,16 +12,12 @@ from flask_cors import CORS
 import logging 
 from itsdangerous import URLSafeTimedSerializer
 from flask_limiter import Limiter
-import logging
 from flask_limiter.util import get_remote_address
 import openai
 from datetime import datetime, timedelta
-from werkzeug.security import generate_password_hash as encrypt_password
-from flask_mail import Message
-from http import HTTPStatus
-import re , io
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash as encrypt_password, check_password_hash
 from wtforms import Form, StringField, PasswordField, validators
+
 
 
 # Load environment variables
@@ -573,7 +568,7 @@ def listen():
                     "content": f"Using this resume, {resume}, and this job listing, {job_listing}, craft a cover letter that doesn't include addresses but highlights the candidate's fit for the role. Ensure it includes the candidate's name, email, phone number, and LinkedIn profile. Also, only include the company name {company_name}, followed by recruiter's name {recruiter} and today's date {date}. No place holder text is allowed, if recruiters name is not found use 'Dear Hiring Manager.' ",
                 },
             ],
-            temperature=0.7,
+            temperature=1.07,
             top_p=0.9,
             max_tokens=1000,
             frequency_penalty=-0.2,

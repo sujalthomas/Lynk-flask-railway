@@ -1,0 +1,42 @@
+[
+    {
+        "package": "click",
+        "version": "7.1.2",
+        "deps": []
+    },
+    {
+        "package": "gunicorn",
+        "version": "20.0.4",
+        "deps": [
+            {
+                "package": "setuptools",
+                "version": "65.5.0"
+            }
+        ]
+    },
+    {
+        "package": "itsdangerous",
+        "version": "1.1.0",
+        "deps": []
+    },
+    {
+        "package": "jinja2",
+        "version": "2.11.3",
+        "deps": [
+            {
+                "package": "markupsafe",
+                "version": "1.1.1"
+            }
+        ]
+    },
+    {
+        "package": "markupsafe",
+        "version": "1.1.1",
+        "deps": []
+    },
+    {
+        "package": "python-dotenv",
+        "version": "1.0.0",
+        "deps": []
+    }
+]
