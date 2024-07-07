@@ -17,4 +17,4 @@ redis==4.6.0
 SQLAlchemy==2.0.18
 Werkzeug==2.3.6
 WTForms==3.0.1
-psycopg2
+psycopg2-binary==2.9.9
