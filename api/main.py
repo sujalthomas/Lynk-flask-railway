@@ -53,7 +53,7 @@ DB_NAME = os.getenv("DB_NAME")
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = f"postgresql://postgres:69qK1AyQZVbWpUxpZ1EZ@containers-us-west-105.railway.app:5544/railway"
+] = f"postgres://default:31NkmuSUHygT@ep-wandering-shadow-a10wge39.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require"
 
 
 # Database configuration
@@ -85,9 +85,9 @@ mail = FlaskMail(app)
 
 
 # Session configurations 
-app.config["REDIS_URL"] = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
+app.config["REDIS_URL"] = "redis://default:AZbNAAIncDE3ZmYyZTdhZDZiZjc0NzVhODJhY2UxZjQyOTA5OWUzMXAxMzg2MDU@settling-wolf-38605.upstash.io:6379"
 
-REDIS_URL = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
+REDIS_URL = "redis://default:AZbNAAIncDE3ZmYyZTdhZDZiZjc0NzVhODJhY2UxZjQyOTA5OWUzMXAxMzg2MDU@settling-wolf-38605.upstash.io:6379"
 
 
 limiter = Limiter(
@@ -557,7 +557,7 @@ def listen():
 
     try:
         completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
@@ -657,7 +657,7 @@ def generate_resume():
 
     try:
         completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
