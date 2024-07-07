@@ -1,3 +1,5 @@
+```
+
 # Flask Application with User Management and File Handling
 
 This repository contains a Flask web application with functionalities including user registration, email verification, login, password reset, session management, file upload, and generating cover letters and resumes using the OpenAI API.
