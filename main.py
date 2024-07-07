@@ -53,7 +53,7 @@ DB_NAME = os.getenv("DB_NAME")
 
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = f"postgresql://postgres:69qK1AyQZVbWpUxpZ1EZ@containers-us-west-105.railway.app:5544/railway"
+] = f"postgresql://postgres:tSvQAiDNibEjkyzPiIXVqzCkGapdStOm@roundhouse.proxy.rlwy.net:23774/railway"
 
 
 # Database configuration
@@ -85,9 +85,9 @@ mail = FlaskMail(app)
 
 
 # Session configurations 
-app.config["REDIS_URL"] = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
+app.config["REDIS_URL"] = "redis://default:xVJjBddFapqEPbPnWmhqGDelrlCTYUyS@monorail.proxy.rlwy.net:47916"
 
-REDIS_URL = "redis://default:S5rZfd5YEDm88llfugC5@containers-us-west-154.railway.app:7407"
+REDIS_URL = "redis://default:xVJjBddFapqEPbPnWmhqGDelrlCTYUyS@monorail.proxy.rlwy.net:47916"
 
 
 limiter = Limiter(
